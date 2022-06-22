@@ -18,4 +18,6 @@ protected:
 protected:
 	UPROPERTY(BlueprintReadWrite)
 	float Speed;
+	UPROPERTY(BlueprintReadWrite)
+	uint8 bSprint:1 ;
 };

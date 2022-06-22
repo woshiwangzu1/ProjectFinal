@@ -3,8 +3,11 @@
 
 #include "BaseCharacter.h"
 
-// Sets default values
-ABaseCharacter::ABaseCharacter()
+#include "Character/BaseMovementComponent.h"
+
+
+ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
+	:Super(ObjectInitializer.SetDefaultSubobjectClass<UBaseMovementComponent>(CharacterMovementComponentName))
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -14,9 +17,6 @@ ABaseCharacter::ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Log, TEXT("BeginPlay"));
-	
-	UE_LOG(LogTemp, Log, TEXT("FYG测试"));
 }
 
 // Called every frame

@@ -3,7 +3,8 @@
 
 #include "Character/PlayerCharacter.h"
 
-APlayerCharacter::APlayerCharacter()
+APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer)
+	:Super(ObjectInitializer)
 {
 	
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
@@ -20,17 +21,21 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"),this,&APlayerCharacter::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"),this,&APlayerCharacter::LookUp);
 	PlayerInputComponent->BindAxis(TEXT("Turn"),this,&APlayerCharacter::Turn);
+	PlayerInputComponent->BindAction(TEXT("Sprint"),IE_Pressed,this,&APlayerCharacter::DoSprint);
+	PlayerInputComponent->BindAction(TEXT("Sprint"),IE_Released,this,&APlayerCharacter::StopSprint);
 }
 
 void APlayerCharacter::MoveForward(float Value)
 {
-	AddMovementInput(GetActorForwardVector(),Value);
+	FRotator Rot(0,GetControlRotation().Yaw,Value);
+	AddMovementInput(Rot.Quaternion().GetAxisX(),Value);
 	
 }
 
 void APlayerCharacter::MoveRight(float Value)
 {
-	AddMovementInput(GetActorRightVector(),Value);
+	FRotator Rot(0,GetControlRotation().Yaw,Value);
+	AddMovementInput(Rot.Quaternion().GetAxisY(),Value);
 }
 
 void APlayerCharacter::LookUp(float Value)
@@ -41,4 +46,14 @@ void APlayerCharacter::LookUp(float Value)
 void APlayerCharacter::Turn(float Value)
 {
 	AddControllerYawInput(Value*GetWorld()->GetDeltaSeconds()*60);
+}
+
+void APlayerCharacter::DoSprint()
+{
+	bSprint = true;
+}
+
+void APlayerCharacter::StopSprint()
+{
+	bSprint = false;
 }
