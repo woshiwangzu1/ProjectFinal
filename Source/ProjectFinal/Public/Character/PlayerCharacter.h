@@ -26,9 +26,10 @@ protected:
 	void Turn(float Value);
 	void DoSprint();
 	void StopSprint();
+	
 protected:
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArmComponent;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UCameraComponent* CameraComponent;
 };
