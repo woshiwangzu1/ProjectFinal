@@ -31,6 +31,16 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
+
+bool ABaseCharacter::IsSprinting()
+{
+	if (!IsHoldWeapon())
+	{
+		return bSprint;
+	}
+	return bSprint && FVector::DotProduct(GetVelocity().GetSafeNormal2D(), GetActorForwardVector()) > 0.9;
+}
+
 void ABaseCharacter::SetLockPlayerView(bool Lock)
 {
 	UE_LOG(LogTemp, Log, TEXT("Lock===%d"),Lock);

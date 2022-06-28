@@ -17,7 +17,11 @@ void UBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		bSprint = BaseCharacter->IsSprinting();
 		bHoldWeapon = BaseCharacter->IsHoldWeapon();
-		Dir = CalculateDirection(GetOwningActor()->GetVelocity(),BaseCharacter->GetActorForwardVector().Rotation());
+		if (Speed>0)
+		{
+			Dir = CalculateDirection(GetOwningActor()->GetVelocity(),BaseCharacter->GetActorForwardVector().Rotation());
+		}
+		
 		bIsFalling = BaseCharacter->GetMovementComponent()->IsFalling();
 	}
 	

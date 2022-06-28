@@ -7,7 +7,7 @@
 
 UBaseMovementComponent::UBaseMovementComponent()
 {
-	SprintSpeed =600;
+	SprintSpeed =720;
 	MoveSpeed = 420;
 }
 

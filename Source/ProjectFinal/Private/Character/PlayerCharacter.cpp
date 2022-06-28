@@ -23,12 +23,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("Turn"),this,&APlayerCharacter::Turn);
 	PlayerInputComponent->BindAction(TEXT("Sprint"),IE_Pressed,this,&APlayerCharacter::DoSprint);
 	PlayerInputComponent->BindAction(TEXT("Sprint"),IE_Released,this,&APlayerCharacter::StopSprint);
-	PlayerInputComponent->BindAction(TEXT("Jump"),IE_Pressed,this,&APlayerCharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Jump"),IE_Pressed,this,&APlayerCharacter::DoJump);
 	PlayerInputComponent->BindAction(TEXT("ChangeWeaponHold"),IE_Pressed,this,&APlayerCharacter::ChangeHoldWeapon);
 }
 
 void APlayerCharacter::MoveForward(float Value)
 {
+	
 	FRotator Rot(0,GetControlRotation().Yaw,Value);
 	AddMovementInput(Rot.Quaternion().GetAxisX(),Value);
 	
@@ -36,6 +37,7 @@ void APlayerCharacter::MoveForward(float Value)
 
 void APlayerCharacter::MoveRight(float Value)
 {
+	
 	FRotator Rot(0,GetControlRotation().Yaw,Value);
 	AddMovementInput(Rot.Quaternion().GetAxisY(),Value);
 }
@@ -62,6 +64,10 @@ void APlayerCharacter::StopSprint()
 
 void APlayerCharacter::DoJump()
 {
+	if (!IsHoldWeapon())
+	{
+		return;
+	}
 	Jump();
 }
 
