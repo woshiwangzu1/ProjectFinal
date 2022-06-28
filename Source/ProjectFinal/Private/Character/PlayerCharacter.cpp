@@ -23,6 +23,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("Turn"),this,&APlayerCharacter::Turn);
 	PlayerInputComponent->BindAction(TEXT("Sprint"),IE_Pressed,this,&APlayerCharacter::DoSprint);
 	PlayerInputComponent->BindAction(TEXT("Sprint"),IE_Released,this,&APlayerCharacter::StopSprint);
+	PlayerInputComponent->BindAction(TEXT("Jump"),IE_Pressed,this,&APlayerCharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("ChangeWeaponHold"),IE_Pressed,this,&APlayerCharacter::ChangeHoldWeapon);
 }
 
 void APlayerCharacter::MoveForward(float Value)
@@ -57,3 +59,35 @@ void APlayerCharacter::StopSprint()
 {
 	bSprint = false;
 }
+
+void APlayerCharacter::DoJump()
+{
+	Jump();
+}
+
+
+
+void APlayerCharacter::ChangeHoldWeapon()
+{
+	UE_LOG(LogTemp, Log, TEXT("ChangeHoldWeapon"));
+	if (bHoldWeapon)
+	{
+		UnLoadWeapon();
+	}else
+	{
+		DoHoldWeapon();
+	}
+}
+
+void APlayerCharacter::DoHoldWeapon()
+{
+	bHoldWeapon = true;
+	SetLockPlayerView(true);
+}
+
+void APlayerCharacter::UnLoadWeapon()
+{
+	bHoldWeapon = false;
+	SetLockPlayerView(false);
+}
+

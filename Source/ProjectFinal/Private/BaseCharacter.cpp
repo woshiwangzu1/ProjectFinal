@@ -31,4 +31,22 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
-
+void ABaseCharacter::SetLockPlayerView(bool Lock)
+{
+	UE_LOG(LogTemp, Log, TEXT("Lock===%d"),Lock);
+	if (Lock)
+	{
+		if (UBaseMovementComponent* BaseMovementComponent = Cast<UBaseMovementComponent>(GetMovementComponent()))
+		{
+			BaseMovementComponent->bOrientRotationToMovement = false;
+			bUseControllerRotationYaw = true;
+		}
+	}else
+	{
+		if (UBaseMovementComponent* BaseMovementComponent = Cast<UBaseMovementComponent>(GetMovementComponent()))
+		{
+			BaseMovementComponent->bOrientRotationToMovement = true;
+			bUseControllerRotationYaw = false;
+		}
+	}
+}

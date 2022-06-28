@@ -8,12 +8,20 @@
 void UBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
-	FVector Dir;
 	
-	GetOwningActor()->GetVelocity().ToDirectionAndLength(Dir,Speed);
+	FVector Dirction;
+	
+	GetOwningActor()->GetVelocity().ToDirectionAndLength(Dirction,Speed);
+	
 	if (ABaseCharacter* BaseCharacter = Cast<ABaseCharacter>(TryGetPawnOwner()))
 	{
 		bSprint = BaseCharacter->IsSprinting();
+		bHoldWeapon = BaseCharacter->IsHoldWeapon();
+		Dir = CalculateDirection(GetOwningActor()->GetVelocity(),BaseCharacter->GetActorForwardVector().Rotation());
+		bIsFalling = BaseCharacter->GetMovementComponent()->IsFalling();
 	}
 	
+	
 }
+
+

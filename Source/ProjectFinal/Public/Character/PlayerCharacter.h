@@ -26,10 +26,15 @@ protected:
 	void Turn(float Value);
 	void DoSprint();
 	void StopSprint();
+	void DoJump();
+	void ChangeHoldWeapon();
+	void DoHoldWeapon();
+	void UnLoadWeapon();
 	
 protected:
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArmComponent;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UCameraComponent* CameraComponent;
+	
 };

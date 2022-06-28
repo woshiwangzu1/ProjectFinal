@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <Character/BaseMovementComponent.h>
+
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "BaseCharacter.generated.h"
@@ -27,6 +29,14 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	bool IsSprinting(){return bSprint;};
+	bool IsHoldWeapon(){return bHoldWeapon;};
+	
 protected:
+	void SetLockPlayerView(bool Lock);
+protected:
+	UPROPERTY(BlueprintReadWrite)
 	uint8 bSprint:1;
+	UPROPERTY(BlueprintReadWrite)
+	uint8 bHoldWeapon:1;
+	
 };
