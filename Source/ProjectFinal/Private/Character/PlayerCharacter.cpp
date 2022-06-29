@@ -95,5 +95,6 @@ void APlayerCharacter::UnLoadWeapon()
 {
 	bHoldWeapon = false;
 	SetLockPlayerView(false);
+	
 }
 

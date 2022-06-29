@@ -38,5 +38,5 @@ protected:
 	uint8 bSprint:1;
 	UPROPERTY(BlueprintReadWrite)
 	uint8 bHoldWeapon:1;
-	
+	UAnimMontage* FireMontage;
 };

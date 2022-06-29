@@ -11,6 +11,7 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	FireMontage=ConstructorHelpers::FObjectFinder<UAnimMontage>(TEXT("AnimMontage'/Game/ProjectFinal/Character/Player/Anim/Locomotion/Rifle/Rifle_ShootLoop_Additive_Montage.Rifle_ShootLoop_Additive_Montage_C'")).Object;
 }
 
 // Called when the game starts or when spawned
