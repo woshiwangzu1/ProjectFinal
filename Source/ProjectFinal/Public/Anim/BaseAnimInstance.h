@@ -27,4 +27,8 @@ protected:
 	uint8 bHoldWeapon:1;
 	UPROPERTY(BlueprintReadWrite)
 	uint8 bIsFalling:1;
+	UPROPERTY(BlueprintReadWrite)
+	float AimPitch;
+	UPROPERTY(BlueprintReadWrite)
+	float AimYaw;
 };

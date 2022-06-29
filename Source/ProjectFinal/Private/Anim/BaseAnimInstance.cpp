@@ -4,6 +4,7 @@
 #include "Anim/BaseAnimInstance.h"
 
 #include "BaseCharacter.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void UBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
@@ -23,6 +24,10 @@ void UBaseAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		}
 		
 		bIsFalling = BaseCharacter->GetMovementComponent()->IsFalling();
+
+		FRotator OffsetRotator = UKismetMathLibrary::NormalizedDeltaRotator(BaseCharacter->GetControlRotation(),BaseCharacter->GetActorRotation());
+		AimYaw = OffsetRotator.Yaw;
+		AimPitch = OffsetRotator.Pitch;
 	}
 	
 	
