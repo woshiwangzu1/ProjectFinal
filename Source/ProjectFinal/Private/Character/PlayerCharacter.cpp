@@ -3,7 +3,8 @@
 
 #include "Character/PlayerCharacter.h"
 
-APlayerCharacter::APlayerCharacter()
+APlayerCharacter::APlayerCharacter(const FObjectInitializer& ObjectInitializer)
+	:Super(ObjectInitializer)
 {
 	
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
@@ -20,17 +21,25 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"),this,&APlayerCharacter::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"),this,&APlayerCharacter::LookUp);
 	PlayerInputComponent->BindAxis(TEXT("Turn"),this,&APlayerCharacter::Turn);
+	PlayerInputComponent->BindAction(TEXT("Sprint"),IE_Pressed,this,&APlayerCharacter::DoSprint);
+	PlayerInputComponent->BindAction(TEXT("Sprint"),IE_Released,this,&APlayerCharacter::StopSprint);
+	PlayerInputComponent->BindAction(TEXT("Jump"),IE_Pressed,this,&APlayerCharacter::DoJump);
+	PlayerInputComponent->BindAction(TEXT("ChangeWeaponHold"),IE_Pressed,this,&APlayerCharacter::ChangeHoldWeapon);
 }
 
 void APlayerCharacter::MoveForward(float Value)
 {
-	AddMovementInput(GetActorForwardVector(),Value);
+	
+	FRotator Rot(0,GetControlRotation().Yaw,Value);
+	AddMovementInput(Rot.Quaternion().GetAxisX(),Value);
 	
 }
 
 void APlayerCharacter::MoveRight(float Value)
 {
-	AddMovementInput(GetActorRightVector(),Value);
+	
+	FRotator Rot(0,GetControlRotation().Yaw,Value);
+	AddMovementInput(Rot.Quaternion().GetAxisY(),Value);
 }
 
 void APlayerCharacter::LookUp(float Value)
@@ -42,3 +51,50 @@ void APlayerCharacter::Turn(float Value)
 {
 	AddControllerYawInput(Value*GetWorld()->GetDeltaSeconds()*60);
 }
+
+void APlayerCharacter::DoSprint()
+{
+	bSprint = true;
+}
+
+void APlayerCharacter::StopSprint()
+{
+	bSprint = false;
+}
+
+void APlayerCharacter::DoJump()
+{
+	if (!IsHoldWeapon())
+	{
+		return;
+	}
+	Jump();
+}
+
+
+
+void APlayerCharacter::ChangeHoldWeapon()
+{
+	UE_LOG(LogTemp, Log, TEXT("ChangeHoldWeapon"));
+	if (bHoldWeapon)
+	{
+		UnLoadWeapon();
+	}else
+	{
+		DoHoldWeapon();
+	}
+}
+
+void APlayerCharacter::DoHoldWeapon()
+{
+	bHoldWeapon = true;
+	SetLockPlayerView(true);
+}
+
+void APlayerCharacter::UnLoadWeapon()
+{
+	bHoldWeapon = false;
+	SetLockPlayerView(false);
+	
+}
+

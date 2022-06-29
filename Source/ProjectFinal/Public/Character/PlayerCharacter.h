@@ -16,7 +16,7 @@ class PROJECTFINAL_API APlayerCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 public:
-	APlayerCharacter();
+	APlayerCharacter(const FObjectInitializer& ObjectInitializer);
 protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
@@ -24,10 +24,17 @@ protected:
 	void MoveRight(float Value);
 	void LookUp(float Value);
 	void Turn(float Value);
-
+	void DoSprint();
+	void StopSprint();
+	void DoJump();
+	void ChangeHoldWeapon();
+	void DoHoldWeapon();
+	void UnLoadWeapon();
+	
 protected:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArmComponent;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	UCameraComponent* CameraComponent;
+	
 };

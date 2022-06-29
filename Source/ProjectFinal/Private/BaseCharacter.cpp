@@ -3,20 +3,21 @@
 
 #include "BaseCharacter.h"
 
-// Sets default values
-ABaseCharacter::ABaseCharacter()
+#include "Character/BaseMovementComponent.h"
+
+
+ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
+	:Super(ObjectInitializer.SetDefaultSubobjectClass<UBaseMovementComponent>(CharacterMovementComponentName))
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	FireMontage=ConstructorHelpers::FObjectFinder<UAnimMontage>(TEXT("AnimMontage'/Game/ProjectFinal/Character/Player/Anim/Locomotion/Rifle/Rifle_ShootLoop_Additive_Montage.Rifle_ShootLoop_Additive_Montage_C'")).Object;
 }
 
 // Called when the game starts or when spawned
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Log, TEXT("BeginPlay"));
-	
-	UE_LOG(LogTemp, Log, TEXT("FYG测试"));
 }
 
 // Called every frame
@@ -32,3 +33,31 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+bool ABaseCharacter::IsSprinting()
+{
+	if (!IsHoldWeapon())
+	{
+		return bSprint;
+	}
+	return bSprint && FVector::DotProduct(GetVelocity().GetSafeNormal2D(), GetActorForwardVector()) > 0.9;
+}
+
+void ABaseCharacter::SetLockPlayerView(bool Lock)
+{
+	UE_LOG(LogTemp, Log, TEXT("Lock===%d"),Lock);
+	if (Lock)
+	{
+		if (UBaseMovementComponent* BaseMovementComponent = Cast<UBaseMovementComponent>(GetMovementComponent()))
+		{
+			BaseMovementComponent->bOrientRotationToMovement = false;
+			bUseControllerRotationYaw = true;
+		}
+	}else
+	{
+		if (UBaseMovementComponent* BaseMovementComponent = Cast<UBaseMovementComponent>(GetMovementComponent()))
+		{
+			BaseMovementComponent->bOrientRotationToMovement = true;
+			bUseControllerRotationYaw = false;
+		}
+	}
+}
